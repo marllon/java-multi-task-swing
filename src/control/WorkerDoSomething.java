@@ -3,24 +3,21 @@ package control;
 import java.util.Random;
 
 import javax.swing.JLabel;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
+import javax.swing.JTextPane;
 import javax.swing.SwingWorker;
 
 import view.model.PanelFoo;
 
 public class WorkerDoSomething extends SwingWorker<Void, Void> {
 
-	private JTextArea txtArea;
-	private JLabel label;
 	private Random r = new Random();
+	private PanelFoo _panel;
 
 	WorkerDoSomething() {
 	}
 
 	public WorkerDoSomething(final PanelFoo panelFooInstance) {
-		this.txtArea = panelFooInstance.getTextArea();
-		this.label = panelFooInstance.getLabel();
+		_panel = panelFooInstance;
 	}
 
 	private Integer randomInt(final int min, final int max) {
@@ -32,27 +29,14 @@ public class WorkerDoSomething extends SwingWorker<Void, Void> {
 	@Override
 	protected Void doInBackground() throws Exception {
 		final Integer randomNumber = randomInt(10000000, 1000000000);
-		long j;
-		int progress = 0;
-		final int onePerCent = randomNumber / 100;
-		final int onePerMillion = onePerCent / 10;
-		for (j = 0; j <= randomNumber; j++) {
-			if (j % onePerCent == 0) {
-				progress = (int) j / onePerCent;
-				setProgress(progress);
-			}
-			if (j % onePerMillion == 0) {
-				publish(j);
-			}
+		for (int i = 0; i <= randomNumber; i++) {
+			setProgress((i * 100) / randomNumber);
+			_panel.write("Handling " + i);
 			Thread.sleep(randomInt(1000, 5000));
 		}
-		
+
 		return null;
 	}
 
-	private void publish(final long num) {
-		this.txtArea.append(num + "\n");
-		this.txtArea.setCaretPosition(this.txtArea.getDocument().getLength());
-	}
 
 }

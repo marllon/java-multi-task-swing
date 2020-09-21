@@ -22,7 +22,7 @@ import view.model.PanelFoo;
 import javax.swing.BoxLayout;
 
 public class FormMain extends JFrame {
-	private JButton btnStart;
+	private JButton btnStart, btnStop;
 	private JPanel _panelTop, _panelMid, _panelBot;
 
 	private PanelFoo panelFooA, panelFooB, panelFooC, panelFooD;
@@ -38,6 +38,7 @@ public class FormMain extends JFrame {
 		this._panelBot = new JPanel();
 
 		this.btnStart = new JButton("Start");
+		this.btnStop = new JButton("Stop");
 		this._panelBot.add(this.btnStart);
 
 		this.panelFooA = new PanelFoo(this.ugsRj);
@@ -69,28 +70,20 @@ public class FormMain extends JFrame {
 				auth.setUser("test");
 				auth.setPassword("p@ss");
 //
-				final SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-					@Override
-					protected Void doInBackground() throws Exception {
-						final WorkerDoSomething w1 = new WorkerDoSomething(panelFooA);
-						w1.addPropertyChangeListener(new ProgressListener(panelFooA.getProgressBar()));
-						final WorkerDoSomething w2 = new WorkerDoSomething(panelFooB);
-						w2.addPropertyChangeListener(new ProgressListener(panelFooB.getProgressBar()));
-						final WorkerDoSomething w3 = new WorkerDoSomething(panelFooC);
-						w3.addPropertyChangeListener(new ProgressListener(panelFooC.getProgressBar()));
-						final WorkerDoSomething w4 = new WorkerDoSomething(panelFooD);
-						w4.addPropertyChangeListener(new ProgressListener(panelFooD.getProgressBar()));
+				final WorkerDoSomething w1 = new WorkerDoSomething(panelFooA);
+				w1.addPropertyChangeListener(new ProgressListener(panelFooA.getProgressBar()));
+				final WorkerDoSomething w2 = new WorkerDoSomething(panelFooB);
+				w2.addPropertyChangeListener(new ProgressListener(panelFooB.getProgressBar()));
+				final WorkerDoSomething w3 = new WorkerDoSomething(panelFooC);
+				w3.addPropertyChangeListener(new ProgressListener(panelFooC.getProgressBar()));
+				final WorkerDoSomething w4 = new WorkerDoSomething(panelFooD);
+				w4.addPropertyChangeListener(new ProgressListener(panelFooD.getProgressBar()));
 
-						w1.execute();
-						w2.execute();
-						w3.execute();
-						w4.execute();
+				w1.execute();
+				w2.execute();
+				w3.execute();
+				w4.execute();
 
-						return null;
-					}
-
-				};
-				worker.execute();
 			}
 		});
 
